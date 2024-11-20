@@ -13,9 +13,16 @@ const userProfileSchema = z.object({
         .optional(),
 });
 
+export type FinalUserSchema = z.infer<typeof userProfileSchema>;
+/*  a custom type called FinalUserSchema is created having the type of variables that userProfileSchema has
+    - Static type safety: It ensures your TypeScript types match the schema.
+    - No duplication: You don’t need to manually define the TypeScript type separately.
+*/
+
 app.put('/user', (req, res) => {
     const { success } = userProfileSchema.safeParse(req.body);
-    const updateBody = req.body; // how to assign a type to updateBody?
+    const updateBody: FinalUserSchema = req.body; // how to assign a type to updateBody?
+    //body will be updated following the type finalUserSchema
 
     if (!success) {
         res.status(411).json({});
